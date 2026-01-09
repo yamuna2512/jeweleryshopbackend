@@ -27,24 +27,26 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-i4m=0cgrvo#*)if4du&5d&pgzh*wyuho$9qc%4*upb78x(e=!5'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
 CORS_ALLOW_CREDENTIALS = True
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
-]
+CORS_ALLOWED_ORIGINS = True
+#[
+#     # "http://localhost:3000",
+#     # "http://127.0.0.1:3000",
+# ]
 
-CSRF_TRUSTED_ORIGINS = ['http://127.0.0.1:8000/']
+CSRF_TRUSTED_ORIGINS = [ "https://jeweleryshopmain.netlify.app",]
+# ['http://127.0.0.1:8000/']
 
-CORS_ALLOW_HEADERS = [
-    "authorization",
-    "content-type",
-    "x-csrftoken",
-]
+# CORS_ALLOW_HEADERS = [
+#     "authorization",
+#     "content-type",
+#     "x-csrftoken",
+# ]
 
 # Application definition
 
@@ -68,8 +70,8 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
