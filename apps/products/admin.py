@@ -18,7 +18,7 @@ class SubCategoryAdmin(admin.ModelAdmin):
 # admin.site.register(Product)
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ("id", "product_name", "category", "subcategory", "purity", "price", "stock")
+    list_display = ("id", "product_name", "category", "subcategory", "purity", "price", "stock", "product_image")
     list_filter = ("category", "subcategory", "purity")
     search_fields = ("product_name", "sku")
     ordering = ("-created_at",)
