@@ -2,6 +2,7 @@ from rest_framework import generics, status, filters
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from apps.Users.mixins import CustomLoginRequiredMixin
+from rest_framework.parsers import MultiPartParser, FormParser
  
 from .models import Category, SubCategory, Product, Cart, CartItem, Wishlist
 from .serializers import (
@@ -36,6 +37,7 @@ class SubCategoryListView(generics.ListCreateAPIView):
 class ProductListView(generics.ListCreateAPIView):
     queryset = Product.objects.all().order_by("-id")
     serializer_class = ProductSerializer
+    parser_classes = [MultiPartParser, FormParser]
 
     filter_backends = [filters.SearchFilter]
 
