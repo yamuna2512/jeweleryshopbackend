@@ -37,7 +37,8 @@ class ProductSerializer(serializers.ModelSerializer):
         source="subcategory.subcategory_name", read_only=True
     )
 
-    product_image = serializers.SerializerMethodField()
+    # product_image = serializers.SerializerMethodField()
+    product_image = serializers.ImageField(required=False, allow_null=True)
 
     class Meta:
         model = Product
