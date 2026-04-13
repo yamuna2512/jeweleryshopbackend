@@ -114,6 +114,15 @@ class RemoveCartItemView(CustomLoginRequiredMixin, generics.DestroyAPIView):
 
 
 # =============================
+# UPDATE CART ITEM
+# =============================
+class UpdateCartItemView(CustomLoginRequiredMixin, generics.UpdateAPIView):
+    queryset = CartItem.objects.all()
+    serializer_class = CartItemSerializer
+    lookup_field = "id"
+
+
+# =============================
 # ADD TO WISHLIST
 # =============================
 class AddWishlistView(CustomLoginRequiredMixin, generics.GenericAPIView):

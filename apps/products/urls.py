@@ -7,6 +7,7 @@ from .views import (
     AddToCartView,
     CartView,
     RemoveCartItemView,
+    UpdateCartItemView,
     AddWishlistView,
     WishlistView,
     RemoveWishlistView
@@ -24,6 +25,7 @@ urlpatterns = [
     # CART
     path("cart/add/", AddToCartView.as_view(), name="add-to-cart"),
     path("cart/", CartView.as_view(), name="cart-detail"),
+    path("cart/update/<int:id>/", UpdateCartItemView.as_view(), name="cart-item-update"),
     path("cart/remove/<int:id>/", RemoveCartItemView.as_view(), name="cart-item-remove"),
 
     # WISHLIST
