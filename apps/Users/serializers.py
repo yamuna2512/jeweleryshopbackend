@@ -58,7 +58,7 @@ class UserSignInSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         # Fetch user
         try:
-            user = User.objects.get(email=validated_data['email'])
+            user = User.objects.get(email__iexact=validated_data['email'])
         except User.DoesNotExist:
             raise serializers.ValidationError({"error": "The password or email is incorrect."})
         # Check password
