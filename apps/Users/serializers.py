@@ -1,5 +1,6 @@
 
 from rest_framework import serializers
+from rest_framework.exceptions import AuthenticationFailed
 from django.contrib.auth.hashers import make_password, check_password
 from secrets import token_hex
 from django.utils import timezone
@@ -54,17 +55,20 @@ class UserSignInSerializer(serializers.ModelSerializer):
             'token',
             'token_expires'
         )
-    # Override create()
-    def create(self, validated_data):
-        # Fetch user
+    def validate(self, attrs):
         try:
-            user = User.objects.get(email__iexact=validated_data['email'])
+            user = User.objects.get(email__iexact=attrs['email'])
         except User.DoesNotExist:
-            raise serializers.ValidationError({"error": "The password or email is incorrect."})
-        # Check password
-        if not check_password(validated_data['password'], user.password):
-            raise serializers.ValidationError({"error": "The password or email is incorrect."})
-        # Create new token on login
+            raise AuthenticationFailed("The password or email is incorrect.")
+
+        if not check_password(attrs['password'], user.password):
+            raise AuthenticationFailed("The password or email is incorrect.")
+
+        self.user = user
+        return attrs
+
+    def create(self, validated_data):
+        user = self.user
         user.token = token_hex(30)
         user.token_expires = timezone.now() + timezone.timedelta(days=7)
         user.save()
