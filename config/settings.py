@@ -153,7 +153,7 @@ cloudinary.config(
     cloud_name="dzkfswtru",
     api_key="556332618782382",
     api_secret="ymob6eMf3wdXMKqAQLRs2EAsjmM",
-    secure=True
+    # secure=True
 )
 
 
