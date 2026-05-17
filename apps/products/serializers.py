@@ -2,7 +2,7 @@
 
 from rest_framework import serializers
 from django.conf import settings
-from .models import Category, SubCategory, Product, Cart, CartItem, Wishlist
+from .models import Category, SubCategory, Product, Cart, CartItem, Wishlist, OrderItem, Order
 
 # ==================================
 # CATEGORY SERIALIZER
@@ -95,3 +95,62 @@ class WishlistSerializer(serializers.ModelSerializer):
     class Meta:
         model = Wishlist
         fields = ["id", "user", "product"]
+
+# ==================================
+# ORDER ITEM SERIALIZER
+# ==================================
+
+class OrderItemSerializer(serializers.ModelSerializer):
+
+    product_name = serializers.CharField(
+        source='product.product_name',
+        read_only=True
+    )
+
+    product_image = serializers.CharField(
+        source='product.product_image',
+        read_only=True
+    )
+
+    class Meta:
+        model = OrderItem
+
+        fields = [
+            'id',
+            'product',
+            'product_name',
+            'product_image',
+            'quantity',
+            'price'
+        ]     
+# ==================================
+# ORDER SERIALIZER
+# ==================================
+class OrderSerializer(serializers.ModelSerializer):
+
+    order_items = OrderItemSerializer(
+        many=True,
+        read_only=True
+    )
+
+    class Meta:
+        model = Order
+
+        fields = [
+            'id',
+            'customer_name',
+            'customer_phone',
+            'address',
+            'pin_code',
+            'building_type',
+            'city',
+            'state',
+            'total_price',
+            'total_qty',
+            'status',
+            'created_at',
+            'order_items'
+        ]
+
+
+

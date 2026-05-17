@@ -2,6 +2,7 @@ from django.db import models
 # from django.contrib.auth.models import User
 from apps.Users.models import User
 from cloudinary.models import CloudinaryField
+from django.utils import timezone
 
 # ================================
 # 1. CATEGORY TABLE
@@ -61,5 +62,101 @@ class Wishlist(models.Model):
     def __str__(self):
         return f"{self.user.first_name} → {self.product.product_name}"
 
+# ================================
+# 7. ORDER TABLE
+# ================================
 
+class Order(models.Model):
 
+    class Meta(object):
+        db_table = 'order'
+
+    user = models.ForeignKey(
+        User,
+        related_name='related_order_user',
+        on_delete=models.CASCADE
+    )
+
+    customer_name = models.CharField(max_length=255)
+
+    customer_phone = models.CharField(max_length=255)
+
+    address = models.CharField(max_length=255)
+
+    pin_code = models.CharField(max_length=255)
+
+    building_type = models.CharField(
+        max_length=255,
+        blank=True,
+        null=True
+    )
+
+    city = models.CharField(max_length=255)
+
+    state = models.CharField(max_length=255)
+
+    total_price = models.DecimalField(
+    max_digits=10,
+    decimal_places=2
+)
+
+    total_qty = models.IntegerField()
+
+    created_at = models.DateTimeField(
+        default=timezone.now
+    )
+
+    ORDER_STATUS = (
+    ('Pending', 'Pending'),
+    ('Confirmed', 'Confirmed'),
+    ('Shipped', 'Shipped'),
+    ('Delivered', 'Delivered'),
+    ('Cancelled', 'Cancelled'),
+)
+
+    status = models.CharField(
+    max_length=20,
+    choices=ORDER_STATUS,
+    default='Pending'
+)
+
+    @property
+    def order_items(self):
+        return self.related_order.all()
+
+    def __str__(self):
+        return self.customer_name
+    
+
+# ================================
+#  8.ORDER ITEM TABLE
+# ================================
+class OrderItem(models.Model):
+
+    class Meta(object):
+        db_table = 'order_item'
+
+    order = models.ForeignKey(
+        Order,
+        related_name='related_order',
+        on_delete=models.CASCADE
+    )
+
+    product = models.ForeignKey(
+        Product,
+        on_delete=models.CASCADE
+    )
+
+    quantity = models.PositiveIntegerField(default=1)
+
+    price = models.DecimalField(
+        max_digits=10,
+        decimal_places=2
+    )
+
+    created_at = models.DateTimeField(
+        default=timezone.now
+    )
+
+    def __str__(self):
+        return self.product.product_name
