@@ -117,7 +117,7 @@ class Order(models.Model):
     status = models.CharField(
     max_length=20,
     choices=ORDER_STATUS,
-    default='Pending'
+    default='confirmed'
 )
 
     @property
